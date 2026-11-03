@@ -1,0 +1,27 @@
+name: ai-quality-gate
+on:
+  push: { branches: [main] }
+  pull_request:
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip }
+      - run: pip install -r requirements.txt
+      - name: Unit, API-contract, guardrail and conversation tests
+        run: python -m pytest -q
+      - name: Golden-dataset evaluation gate (thresholds + baseline regression)
+        run: python -m evals.run_eval
+      - name: Upload evaluation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with: { name: eval-report, path: evals/report.json }
+      - name: Start API for black-box red-team tests
+        run: |
+          uvicorn app.main:app --port 8000 &
+          for i in $(seq 1 30); do curl -sf localhost:8000/health && break; sleep 1; done
+      - name: promptfoo guardrail suite
+        env: { PROMPTFOO_DISABLE_TELEMETRY: "1" }
+        run: npx --yes promptfoo@latest eval -c promptfoo/promptfooconfig.yaml --no-cache

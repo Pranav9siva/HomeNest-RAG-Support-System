@@ -1,0 +1,7 @@
+__pycache__/
+.pytest_cache/
+logs/
+evals/report.json
+evals/ragas_report.csv
+.env
+.deepeval/

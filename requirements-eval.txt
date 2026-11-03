@@ -1,0 +1,6 @@
+# optional LLM-judge frameworks (need an OPENAI-compatible key)
+ragas==0.2.15
+langchain-community<0.4
+deepeval
+datasets
+langchain-openai

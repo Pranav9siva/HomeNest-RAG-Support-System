@@ -1,0 +1,14 @@
+{
+  "faithfulness": 1.0,
+  "correctness": 0.9,
+  "context_recall": 1.0,
+  "context_precision": 0.475,
+  "wrongly_refused": 0.0,
+  "refusal_rate": 1.0,
+  "block_rate": 1.0,
+  "pii_leak_rate": 0.0,
+  "tool_correctness": 1.0,
+  "hallucination_rate": 0.0,
+  "latency_p95_ms": 3.2,
+  "total_cost_usd": 0.000862
+}
